@@ -1,4 +1,3 @@
-
 export type FileFolderItemProps = {
   item: FileFolderItem
   isLast?: boolean
@@ -16,4 +15,6 @@ export type FileFolderItem = {
   lastModifiedOn?: string
   lastModifiedBy?: string
   children?: FileFolderItem[]
+  subjectId: number
+  batchId: number
 }

@@ -3,19 +3,19 @@ import av2 from '@/assets/avatar/av2.jpg'
 import Image from 'next/image'
 import { GiClassicalKnowledge } from 'react-icons/gi'
 import { IoIosArrowDown } from 'react-icons/io'
+import { batches, subjects } from '../data/subject-batch-data'
 import Dropdown from './shared/Dropdown'
 
-const courseOptions = ['Chemistry 101', 'Chemistry Advanced', 'Organic Chemistry']
-const batchOptions = ['Batch A', 'Batch B', 'Batch C', 'Batch D']
+
 const TopActions = () => {
   return (
     <div className="flex justify-between font-thin mt-10 gap-4 flex-wrap items-center">
       <div className="flex gap-2 flex-wrap">
-        <Dropdown triggerClassName="min-h-10" wrapperClassName="border-r max-h-10 pr-2" items={courseOptions}>
+        <Dropdown isArrayOfRecords triggerClassName="min-h-10" wrapperClassName="border-r max-h-10 pr-2" items={subjects}>
           <p>Course For Chemistry</p>
           <IoIosArrowDown />
         </Dropdown>
-        <Dropdown triggerClassName="min-h-10" items={batchOptions}>
+        <Dropdown isArrayOfRecords triggerClassName="min-h-10" items={batches}>
           <p>All Batches</p>
           <IoIosArrowDown />
         </Dropdown>

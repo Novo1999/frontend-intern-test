@@ -5,11 +5,15 @@ export const folderDemoData: FileFolderItem[] = [
     id: '1',
     name: 'Chapter 1',
     type: 'folder',
+    subjectId: 1,
+    batchId: 1,
     children: [
       {
         id: '1-1',
         name: 'Chapter 1.1',
         type: 'folder',
+        subjectId: 1,
+        batchId: 1,
         children: [
           {
             id: '1-1-1',
@@ -21,6 +25,8 @@ export const folderDemoData: FileFolderItem[] = [
             createdBy: 'John Doe',
             lastModifiedOn: '2024-02-05',
             lastModifiedBy: 'Jane Smith',
+            subjectId: 1,
+            batchId: 1,
           },
           {
             id: '1-1-2',
@@ -32,6 +38,8 @@ export const folderDemoData: FileFolderItem[] = [
             createdBy: 'Alice Johnson',
             lastModifiedOn: '2024-02-07',
             lastModifiedBy: 'Bob Williams',
+            subjectId: 1,
+            batchId: 1,
           },
         ],
       },
@@ -39,6 +47,8 @@ export const folderDemoData: FileFolderItem[] = [
         id: '1-2',
         name: 'Chapter 1.2',
         type: 'folder',
+        subjectId: 1,
+        batchId: 1,
         children: [
           {
             id: '1-2-1',
@@ -50,6 +60,8 @@ export const folderDemoData: FileFolderItem[] = [
             createdBy: 'Eve Carter',
             lastModifiedOn: '2024-02-10',
             lastModifiedBy: 'Charlie Brown',
+            subjectId: 1,
+            batchId: 1,
           },
         ],
       },
@@ -59,6 +71,8 @@ export const folderDemoData: FileFolderItem[] = [
     id: '2',
     name: 'Chapter 2',
     type: 'folder',
+    subjectId: 2,
+    batchId: 2,
     children: [
       {
         id: '2-1',
@@ -70,6 +84,8 @@ export const folderDemoData: FileFolderItem[] = [
         createdBy: 'David Green',
         lastModifiedOn: '2024-03-20',
         lastModifiedBy: 'Emma White',
+        subjectId: 2,
+        batchId: 2,
       },
     ],
   },
@@ -77,11 +93,15 @@ export const folderDemoData: FileFolderItem[] = [
     id: '3',
     name: 'Resources',
     type: 'folder',
+    subjectId: 3,
+    batchId: 3,
     children: [
       {
         id: '3-1',
         name: 'Reference Material',
         type: 'folder',
+        subjectId: 3,
+        batchId: 3,
         children: [
           {
             id: '3-1-1',
@@ -93,6 +113,8 @@ export const folderDemoData: FileFolderItem[] = [
             createdBy: 'Sophia Black',
             lastModifiedOn: '2024-02-14',
             lastModifiedBy: 'Liam Wilson',
+            subjectId: 3,
+            batchId: 3,
           },
           {
             id: '3-1-2',
@@ -104,8 +126,32 @@ export const folderDemoData: FileFolderItem[] = [
             createdBy: 'Olivia Davis',
             lastModifiedOn: '2024-03-01',
             lastModifiedBy: 'Noah Brown',
+            subjectId: 3,
+            batchId: 3,
           },
         ],
+      },
+    ],
+  },
+  {
+    id: '4',
+    name: 'Chapter 3',
+    type: 'folder',
+    subjectId: 4,
+    batchId: 4,
+    children: [
+      {
+        id: '4-1',
+        name: 'Advanced Topics.pdf',
+        type: 'file',
+        size: '10 MB',
+        kind: 'PDF Document',
+        createdOn: '2024-04-05',
+        createdBy: 'Ella Scott',
+        lastModifiedOn: '2024-04-15',
+        lastModifiedBy: 'Mason King',
+        subjectId: 4,
+        batchId: 4,
       },
     ],
   },

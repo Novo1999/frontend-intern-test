@@ -18,6 +18,5 @@ export type FileFolderItem = {
   createdBy?: string
   lastModifiedOn?: string
   lastModifiedBy?: string
-  // visibleTo: ('students' | 'teachers' | 'moderators')[]
   children?: FileFolderItem[]
 }

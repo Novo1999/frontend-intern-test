@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Kanit } from 'next/font/google'
 import Navbar from '../components/Navbar'
+import { FolderProvider } from '../context/FolderContext'
 import ModalProvider from '../context/ModalContext'
 import './globals.css'
 
@@ -24,8 +25,10 @@ export default function RootLayout({
     <html data-theme="light" lang="en">
       <body className={`${kanit.className} antialiased overflow-hidden bg-gray-100`}>
         <ModalProvider>
-          <Navbar />
-          <div className="relative">{children}</div>
+          <FolderProvider>
+            <Navbar />
+            <div className="relative">{children}</div>
+          </FolderProvider>
         </ModalProvider>
       </body>
     </html>

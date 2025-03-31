@@ -47,7 +47,7 @@ const GenericModal = ({
           <div className="flex justify-end gap-4 mt-4">
             <button className="btn btn-outline">Cancel</button>
             {showConfirmBtn && (
-              <button className={'btn btn-primary ' + confirmBtnClass || ''} onClick={confirmHandler}>
+              <button className={'btn text-white ' + confirmBtnClass || ''} onClick={confirmHandler}>
                 {confirmBtnText || 'Confirm'}
               </button>
             )}

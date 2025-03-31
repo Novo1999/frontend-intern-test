@@ -1,17 +1,16 @@
 import { useState } from 'react'
 import { FaEye, FaFileAlt, FaFolder } from 'react-icons/fa'
 import { IoIosArrowDown } from 'react-icons/io'
-import { visibilityData } from '../../data/visibility-data'
+import { useFolderContext } from '../../context/FolderContext'
 import { type FileFolderItem, FileFolderItemProps } from '../../types/file-folder-item-prop'
 import { FileItem } from '../../types/file-item'
 import { getAllChildIds } from '../../utils/getAllIds'
 import Dropdown from './Dropdown'
 
 export const accessTo = ['students', 'teachers', 'moderators']
-export const actions = ['Edit', 'Delete']
+export const actions = ['edit', 'delete']
 
-const FileFolderItem = ({ item, isLast, onCheck, checkedItems }: FileFolderItemProps) => {
-  const [visibility, setVisibility] = useState(visibilityData)
+const FileFolderItem = ({ item, isLast, onCheck, checkedItems, setFolderData }: FileFolderItemProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const { id, name, type, children } = item
 
@@ -23,25 +22,12 @@ const FileFolderItem = ({ item, isLast, onCheck, checkedItems }: FileFolderItemP
     const childrenIds = children ? getAllChildIds(children) : []
     onCheck?.(id, childrenIds)
   }
-
-  const handleVisibility = (id: string, item: string) => {
-    setVisibility((prev) => {
-      return prev.map((prevItem) => {
-        if (prevItem.id === id) {
-          if (prevItem.visibleTo.includes(item)) {
-            return { ...prevItem, visibleTo: prevItem.visibleTo.filter((vT) => vT !== item) }
-          } else {
-            return { ...prevItem, visibleTo: [...prevItem.visibleTo, item] }
-          }
-        } else {
-          return prevItem
-        }
-      })
-    })
-  }
+  const { visibility, handleDelete, handleVisibility } = useFolderContext()
 
   const typeIsFolder = type === 'folder'
   const typeIsFile = type === 'file'
+
+  const visibilities = visibility.find((vD) => vD.id === id)?.visibleTo
 
   return (
     <div className={`${!isLast && typeIsFolder ? 'border-b' : ''}`}>
@@ -50,13 +36,13 @@ const FileFolderItem = ({ item, isLast, onCheck, checkedItems }: FileFolderItemP
           <input type="checkbox" checked={isChecked} onChange={handleCheck} className="size-4 cursor-pointer accent-black" />
           {typeIsFolder ? (
             <button onClick={toggleOpen} className="flex items-center gap-2 cursor-pointer">
-              <FaFolder className="text-gray-600" />
+              <FaFolder className="text-gray-600 text-2xl" />
               <span>{name}</span>
               <IoIosArrowDown className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition duration-200`} />
             </button>
           ) : (
             <div className="flex items-center gap-2">
-              <FaFileAlt className="text-gray-600" />
+              <FaFileAlt className="text-gray-600 text-2xl" />
               <span>{name}</span>
             </div>
           )}
@@ -69,24 +55,28 @@ const FileFolderItem = ({ item, isLast, onCheck, checkedItems }: FileFolderItemP
                 triggerClassName="min-h-10"
                 showCheck
                 wrapperClassName="max-h-10"
-                checked={accessTo.filter((aT) => visibility.find((vD) => vD.id === id)?.visibleTo.includes(aT))}
+                checked={accessTo.filter((aT) => visibilities?.includes(aT))}
                 items={accessTo}
               >
                 <FaEye /> <span>Access to</span> <IoIosArrowDown />
               </Dropdown>
-              <Dropdown triggerClassName="min-h-10" items={actions}>
+              <Dropdown onClick={(action) => (action === 'delete' ? handleDelete(id) : null)} triggerClassName="min-h-10" items={actions}>
                 <p>Actions</p> <IoIosArrowDown />
               </Dropdown>
             </div>
             <p className="italic capitalize">
               <strong>Visible to: </strong>
-              {visibility.find((vD) => vD.id === id)?.visibleTo.join(', ') || 'Nobody'}
+              {visibilities?.join(', ') || 'Nobody'}
             </p>
           </div>
           {typeIsFile && <FileDetails details={item as FileItem} />}
         </div>
       </div>
-      {isOpen && typeIsFolder && children?.map((child, index, self) => <FileFolderItem key={child.id} isLast={self.length - 1 === index} item={child} checkedItems={checkedItems} onCheck={onCheck} />)}
+      {isOpen &&
+        typeIsFolder &&
+        children?.map((child, index, self) => (
+          <FileFolderItem setFolderData={setFolderData} key={child.id} isLast={self.length - 1 === index} item={child} checkedItems={checkedItems} onCheck={onCheck} />
+        ))}
     </div>
   )
 }

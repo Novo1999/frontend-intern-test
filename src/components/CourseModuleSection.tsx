@@ -1,36 +1,16 @@
 'use client'
-import { useState } from 'react'
 import { FaEye } from 'react-icons/fa'
 import { HiArrowLeftCircle } from 'react-icons/hi2'
-import { IoIosArrowDown, IoIosArrowForward, IoMdWarning } from 'react-icons/io'
-import { useModalContext } from '../context/ModalContext'
-import { folderDemoData } from '../data/folder-demo-data'
+import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
+import { useFolderContext } from '../context/FolderContext'
 import { FileFolderItemProps } from '../types/file-folder-item-prop'
-import { getAllIds } from '../utils/getAllIds'
 import CourseModuleNavbar from './CourseModuleNavbar'
 import ModuleActions from './ModuleActions'
 import Dropdown from './shared/Dropdown'
 import FileFolderItem, { accessTo, actions } from './shared/FileFolderItem'
 
 const CourseModuleSection = () => {
-  const [checkedItems, setCheckedItems] = useState<string[]>([])
-  const [folderData, setFolderData] = useState<FileFolderItemProps['item'][]>(folderDemoData)
-  const { openModal } = useModalContext()
-
-  const toggleCheck = (id: string, childrenIds: string[] = []) => {
-    setCheckedItems((prev) => {
-      const isChecked = prev.includes(id)
-      return isChecked ? prev.filter((checkedId) => checkedId !== id && !childrenIds.includes(checkedId)) : [...prev, id, ...childrenIds]
-    })
-  }
-
-  const checkAll = () => {
-    const allIds = getAllIds(folderDemoData as FileFolderItemProps['item'][])
-    setCheckedItems((prev) => (prev.length > 0 ? [] : allIds))
-  }
-
-  const showDeleteModal = () =>
-    openModal('Are you sure you want to delete everything?', { confirmBtnClass: 'bg-red-500', confirmBtnText: 'Delete', headerIcon: <IoMdWarning />, confirmHandler: () => setFolderData([]) })
+  const { folderData, setFolderData, checkedItems, toggleCheck, showDeleteModal, checkAll, handleDelete } = useFolderContext()
 
   return (
     <div className="card bg-white mt-6 min-h-[65vh] p-4 rounded-md shadow-md">
@@ -59,7 +39,7 @@ const CourseModuleSection = () => {
             <Dropdown triggerClassName="min-h-10" wrapperClassName="max-h-10" items={accessTo}>
               <FaEye /> <span>Access to</span> <IoIosArrowDown />
             </Dropdown>
-            <Dropdown triggerClassName="min-h-10" items={actions}>
+            <Dropdown onClick={(item) => (item === 'delete' ? checkedItems.forEach((id) => handleDelete(id)) : null)} triggerClassName="min-h-10" items={actions}>
               <p>Actions</p> <IoIosArrowDown />
             </Dropdown>
           </div>

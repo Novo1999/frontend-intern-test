@@ -14,7 +14,7 @@ import FileFolderItem, { accessTo, actions } from './shared/FileFolderItem'
 
 const CourseModuleSection = () => {
   const [checkedItems, setCheckedItems] = useState<string[]>([])
-  const [folderData, setFolderData] = useState(folderDemoData)
+  const [folderData, setFolderData] = useState<FileFolderItemProps['item'][]>(folderDemoData)
   const { openModal } = useModalContext()
 
   const toggleCheck = (id: string, childrenIds: string[] = []) => {
@@ -68,7 +68,7 @@ const CourseModuleSection = () => {
 
       <section className="overflow-auto h-[50vh] pb-16 border">
         {folderData.map((item, index, self) => (
-          <FileFolderItem key={item.id} item={item as FileFolderItemProps['item']} isLast={self.length - 1 === index} checkedItems={checkedItems} onCheck={toggleCheck} />
+          <FileFolderItem setFolderData={setFolderData} key={item.id} item={item as FileFolderItemProps['item']} isLast={self.length - 1 === index} checkedItems={checkedItems} onCheck={toggleCheck} />
         ))}
         <ModuleActions />
       </section>

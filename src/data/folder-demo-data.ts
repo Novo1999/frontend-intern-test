@@ -1,4 +1,6 @@
-export const folderDemoData = [
+import { FileFolderItem } from '../types/file-folder-item-prop'
+
+export const folderDemoData: FileFolderItem[] = [
   {
     id: '1',
     name: 'Chapter 1',

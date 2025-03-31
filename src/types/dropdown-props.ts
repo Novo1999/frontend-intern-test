@@ -7,4 +7,6 @@ export type DropdownProps = {
   wrapperClassName?: string
   triggerClassName?: string
   onClick?: (item: string, index: number) => void
+  showCheck?: boolean
+  checked?: string[]
 }

@@ -43,7 +43,7 @@ const CourseModuleNavbar = ({ onDelete, folderData }: CourseModuleNavbarProp) =>
           <button className="tooltip" data-tip="Refresh">
             <FaSync />
           </button>
-          <button className="tooltip" data-tip="Settings">
+          <button className="tooltip tooltip-left" data-tip="Settings">
             <FaSlidersH />
           </button>
         </div>

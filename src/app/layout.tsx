@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Kanit } from 'next/font/google'
 import Navbar from '../components/Navbar'
-import Sidebar from '../components/Sidebar'
 import './globals.css'
 
 const kanit = Kanit({
@@ -22,10 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html data-theme="light" lang="en">
-      <body className={`${kanit.className} antialiased`}>
+      <body className={`${kanit.className} antialiased overflow-hidden bg-gray-100`}>
         <Navbar />
-        <div className="max-w-[1440px] relative mx-4">
-          <Sidebar />
+        <div className="relative">
           {children}
         </div>
       </body>

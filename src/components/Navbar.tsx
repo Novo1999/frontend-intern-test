@@ -5,7 +5,7 @@ import { RiCustomerService2Fill } from 'react-icons/ri'
 
 const Navbar = () => {
   return (
-    <nav className="min-h-16 md:min-h-20 shadow flex items-center justify-between px-2 md:px-12 bg-gray-50 relative">
+    <nav className="min-h-16 md:min-h-20 shadow flex items-center justify-between px-2 md:px-12 border-b border-slate-300 bg-gray-50 relative">
       <p className="text-xs md:text-sm lg:text-lg">Teacher&apos;s Center</p>
       <div className="flex gap-4 md:gap-6 items-center">
         <div className="flex gap-4 md:gap-6 *:text-xl">

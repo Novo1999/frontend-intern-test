@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { HiArrowLeftCircle, HiBars3BottomLeft } from 'react-icons/hi2'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 type SidebarItem = {
@@ -39,18 +39,19 @@ const sidebarData = [
   },
 ]
 
-const Sidebar = () => {
+const Sidebar = ({ children }: { children: ReactNode }) => {
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">
-        <label htmlFor="my-drawer" className="absolute -left-4 p-2 border cursor-pointer drawer-button lg:hidden">
+      <div className="drawer-content bg-gray-100 h-screen pl-4 overflow-scroll">
+        <label htmlFor="my-drawer" className="absolute left-0 p-2 border cursor-pointer drawer-button lg:hidden">
           <HiBars3BottomLeft />
         </label>
+        {children}
       </div>
-      <div className="drawer-side !overflow-hidden">
+      <div className="drawer-side z-[9999] bg-white">
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
-        <ul className="menu flex-col justify-between bg-white relative lg:mt-1 text-base-content min-h-full lg:min-h-[90vh] w-48 pr-4 py-4 *:capitalize *:font-thin lg:text-lg">
+        <ul className="menu flex-col justify-between bg-white relative text-base-content min-h-full lg:min-h-[90vh] w-48 pr-4 py-4 *:capitalize *:font-thin lg:text-lg">
           <div>
             {sidebarData.map((data) => (
               <SidebarItem key={data.item} data={data as SidebarItem} />

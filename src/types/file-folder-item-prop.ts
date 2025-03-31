@@ -1,11 +1,8 @@
-import { Dispatch, SetStateAction } from 'react'
 
 export type FileFolderItemProps = {
   item: FileFolderItem
   isLast?: boolean
   onCheck?: (id: string, childrenIds: string[]) => void
-  checkedItems: string[]
-  setFolderData?: Dispatch<SetStateAction<FileFolderItem[]>>
 }
 
 export type FileFolderItem = {

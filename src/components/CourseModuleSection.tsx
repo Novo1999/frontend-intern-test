@@ -10,11 +10,11 @@ import Dropdown from './shared/Dropdown'
 import FileFolderItem, { accessTo, actions } from './shared/FileFolderItem'
 
 const CourseModuleSection = () => {
-  const { folderData, setFolderData, checkedItems, toggleCheck, showDeleteModal, checkAll, handleDelete } = useFolderContext()
+  const { folderData, checkedItems, toggleCheck, showDeleteModal, checkAll, handleDelete } = useFolderContext()
 
   return (
     <div className="card bg-white mt-6 min-h-[65vh] p-4 rounded-md shadow-md">
-      <CourseModuleNavbar onDelete={showDeleteModal} folderData={folderData} />
+      <CourseModuleNavbar onDelete={showDeleteModal} />
       {/* Breadcrumb */}
       <div className="flex items-center justify-between space-x-2 mt-4 text-sm lg:text-xl py-4">
         <div className="flex gap-2 items-center flex-wrap">
@@ -48,7 +48,7 @@ const CourseModuleSection = () => {
 
       <section className="overflow-auto h-[50vh] pb-16 border">
         {folderData.map((item, index, self) => (
-          <FileFolderItem setFolderData={setFolderData} key={item.id} item={item as FileFolderItemProps['item']} isLast={self.length - 1 === index} checkedItems={checkedItems} onCheck={toggleCheck} />
+          <FileFolderItem key={item.id} item={item as FileFolderItemProps['item']} isLast={self.length - 1 === index} onCheck={toggleCheck} />
         ))}
         <ModuleActions />
       </section>

@@ -12,7 +12,7 @@ export const actions = ['edit', 'delete']
 
 const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { setFolderData, checkedItems } = useFolderContext()
+  const { checkedItems } = useFolderContext()
 
   const { id, name, type, children } = item
 
@@ -74,11 +74,7 @@ const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
           {typeIsFile && <FileDetails details={item as FileItem} />}
         </div>
       </div>
-      {isOpen &&
-        typeIsFolder &&
-        children?.map((child, index, self) => (
-          <FileFolderItem setFolderData={setFolderData} key={child.id} isLast={self.length - 1 === index} item={child} checkedItems={checkedItems} onCheck={onCheck} />
-        ))}
+      {isOpen && typeIsFolder && children?.map((child, index, self) => <FileFolderItem key={child.id} isLast={self.length - 1 === index} item={child} onCheck={onCheck} />)}
     </div>
   )
 }

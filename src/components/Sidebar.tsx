@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { ReactNode, useState } from 'react'
 import { HiArrowLeftCircle, HiBars3BottomLeft } from 'react-icons/hi2'
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
+import { IoIosArrowUp } from 'react-icons/io'
 type SidebarItem = {
   header?: boolean
   item: string
@@ -83,7 +83,7 @@ const SidebarItem = ({ data }: { data: SidebarItem }) => {
         {hasChild ? (
           <div>
             {data.item}
-            {isOpen ? <IoIosArrowDown /> : <IoIosArrowUp />}
+            <IoIosArrowUp className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition duration-200`} />
           </div>
         ) : data.header ? (
           <div className="flex justify-between mb-6">

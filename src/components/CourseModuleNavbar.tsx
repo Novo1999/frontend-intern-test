@@ -5,7 +5,7 @@ import { FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTrash } from 'reac
 const tabs = ['content', 'course details', 'revision']
 
 const CourseModuleNavbar = () => {
-  const [selectedTab, setSelectedTab] = useState('')
+  const [selectedTab, setSelectedTab] = useState('content')
 
   const handleSelectTab = (tab: string) => {
     setSelectedTab(tab)

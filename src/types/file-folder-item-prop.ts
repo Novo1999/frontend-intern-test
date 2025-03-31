@@ -7,4 +7,6 @@ export type FileFolderItemProps = {
     children?: FileFolderItemProps['item'][]
   }
   isLast?: boolean
+  onCheck?: (id: string, childrenIds: string[]) => void
+  checkedItems: string[]
 }

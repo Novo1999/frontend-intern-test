@@ -3,6 +3,7 @@ import { FaEye } from 'react-icons/fa'
 import { HiArrowLeftCircle } from 'react-icons/hi2'
 import { IoIosArrowDown, IoIosArrowForward } from 'react-icons/io'
 import { useFolderContext } from '../context/FolderContext'
+import { useModalContext } from '../context/ModalContext'
 import { FileFolderItemProps } from '../types/file-folder-item-prop'
 import CourseModuleNavbar from './CourseModuleNavbar'
 import ModuleActions from './ModuleActions'
@@ -10,7 +11,8 @@ import Dropdown from './shared/Dropdown'
 import FileFolderItem, { accessTo, actions } from './shared/FileFolderItem'
 
 const CourseModuleSection = () => {
-  const { folderData, checkedItems, toggleCheck, showDeleteModal, checkAll, handleDelete } = useFolderContext()
+  const { folderData, checkedItems, setCheckedItems, toggleCheck, showDeleteModal, checkAll, handleDelete } = useFolderContext()
+  const { openModal } = useModalContext()
 
   return (
     <div className="card bg-white mt-6 min-h-[65vh] p-4 rounded-md shadow-md">
@@ -39,7 +41,23 @@ const CourseModuleSection = () => {
             <Dropdown triggerClassName="min-h-10" wrapperClassName="max-h-10" items={accessTo}>
               <FaEye /> <span>Access to</span> <IoIosArrowDown />
             </Dropdown>
-            <Dropdown onClick={(item) => (item === 'delete' ? checkedItems.forEach((id) => handleDelete(id)) : null)} triggerClassName="min-h-10" items={actions}>
+            <Dropdown
+              onClick={(item) =>
+                item === 'delete'
+                  ? openModal(`Are you sure you want to delete ${checkedItems.length} item${checkedItems.length > 1 ? 's' : ''}?`, {
+                      confirmHandler: () => {
+                        checkedItems.forEach((id) => {
+                          handleDelete(id)
+                          setCheckedItems((prevItems) => prevItems.filter((prevId) => prevId !== id))
+                        })
+                      },
+                      confirmBtnClass: 'bg-red-500',
+                    })
+                  : null
+              }
+              triggerClassName="min-h-10"
+              items={actions}
+            >
               <p>Actions</p> <IoIosArrowDown />
             </Dropdown>
           </div>

@@ -1,16 +1,13 @@
 'use client'
 import { useState } from 'react'
 import { BsDownload, BsThreeDots, BsTrash } from 'react-icons/bs'
+import { ModuleNavbarProp } from '../../types/module-navbar-prop'
 import Dropdown from './Dropdown'
 
-type ModuleNavbarProp = {
-  items: string[]
-  showCount: number
-}
 
 const ModuleNavbar = ({ items, showCount = 6 }: ModuleNavbarProp) => {
   const [navItems, setNavItems] = useState(items)
-  const [isSelected, setIsSelected] = useState('')
+  const [isSelected, setIsSelected] = useState(items?.[showCount - 4] || '')
 
   const handleSelected = (item: string) => {
     setIsSelected(item)
@@ -33,7 +30,7 @@ const ModuleNavbar = ({ items, showCount = 6 }: ModuleNavbarProp) => {
         {navItems.slice(0, showCount).map((item) => {
           const selected = isSelected === item
           return (
-            <li className={`py-4 px-2 ${selected ? 'border-blue-800 border-b-4 font-semibold' : ''} text-blue-600`} onClick={() => handleSelected(item)} key={item}>
+            <li className={`py-4 px-2 ${selected ? 'border-blue-800 border-b-4 font-semibold' : ''} text-blue-600 hover:border-b-4 hover:border-blue-800`} onClick={() => handleSelected(item)} key={item}>
               {item}
             </li>
           )

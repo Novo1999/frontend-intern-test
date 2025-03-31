@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Kanit } from 'next/font/google'
 import Navbar from '../components/Navbar'
+import ModalProvider from '../context/ModalContext'
 import './globals.css'
 
 const kanit = Kanit({
@@ -22,10 +23,10 @@ export default function RootLayout({
   return (
     <html data-theme="light" lang="en">
       <body className={`${kanit.className} antialiased overflow-hidden bg-gray-100`}>
-        <Navbar />
-        <div className="relative">
-          {children}
-        </div>
+        <ModalProvider>
+          <Navbar />
+          <div className="relative">{children}</div>
+        </ModalProvider>
       </body>
     </html>
   )

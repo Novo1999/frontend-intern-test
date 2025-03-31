@@ -6,8 +6,8 @@ import { FileItem } from '../../types/file-item'
 import { getAllChildIds } from '../../utils/getAllIds'
 import Dropdown from './Dropdown'
 
-const accessTo = ['Students', 'Teachers', 'Moderators']
-const actions = ['Edit', 'Delete']
+export const accessTo = ['Students', 'Teachers', 'Moderators']
+export const actions = ['Edit', 'Delete']
 
 const FileFolderItem = ({ item, isLast, onCheck, checkedItems }: FileFolderItemProps) => {
   const [isOpen, setIsOpen] = useState(false)

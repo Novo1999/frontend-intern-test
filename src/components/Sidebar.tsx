@@ -45,7 +45,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
         </label>
         {children}
       </div>
-      <div className="drawer-side z-[9999] bg-white">
+      <div className="drawer-side z-[99] bg-white">
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
         <ul className="menu flex-col justify-between bg-white relative text-base-content min-h-full lg:min-h-[90vh] w-48 pr-4 py-4 *:capitalize *:font-thin lg:text-lg">
           <div>

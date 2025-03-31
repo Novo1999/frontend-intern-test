@@ -1,5 +1,6 @@
 'use client'
-import { ChangeEvent, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
 import { FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTrash } from 'react-icons/fa'
 import { useFolderContext } from '../context/FolderContext'
 import { CourseModuleNavbarProp } from '../types/course-module-nav-prop'
@@ -9,32 +10,47 @@ const tabs = ['content', 'course details', 'revision']
 
 const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
   const [selectedTab, setSelectedTab] = useState('content')
-  const { folderData, setFolderData } = useFolderContext()
-  const [allFolderData] = useState(folderData)
+  const { folderData, setFolderData, allFolderData } = useFolderContext()
+  const { replace } = useRouter()
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
 
   const handleSelectTab = (tab: string) => {
     setSelectedTab(tab)
   }
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toLowerCase()
+  const handleSearch = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams)
+      if (value) {
+        params.set('search', value.toString())
+      } else {
+        params.delete('search')
+      }
+      replace(`${pathname}?${params.toString()}`)
+      const searchData = (items: FileFolderItem[]): FileFolderItem[] => {
+        return items
+          .map((el) => {
+            const filteredChildren = el.children ? searchData(el.children) : []
 
-    const searchData = (items: FileFolderItem[]): FileFolderItem[] => {
-      return items
-        .map((el) => {
-          const filteredChildren = el.children ? searchData(el.children) : []
+            if (el.name.toLowerCase().includes(value) || filteredChildren.length > 0) {
+              return { ...el, children: filteredChildren }
+            }
 
-          if (el.name.toLowerCase().includes(value) || filteredChildren.length > 0) {
-            return { ...el, children: filteredChildren }
-          }
+            return null
+          })
+          .filter(Boolean) as FileFolderItem[]
+      }
 
-          return null
-        })
-        .filter(Boolean) as FileFolderItem[]
-    }
+      setFolderData(() => searchData(allFolderData))
+    },
+    [allFolderData, replace, searchParams, pathname, setFolderData]
+  )
 
-    setFolderData(() => searchData(allFolderData))
-  }
+  useEffect(() => {
+    if (!searchParams.has('search')) return
+    handleSearch(searchParams.get('search') || '')
+  }, [searchParams, handleSearch])
 
   return (
     <div className="flex justify-between flex-wrap gap-2 items-center border-b">
@@ -55,7 +71,7 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
       <div className="flex flex-wrap gap-2 items-center space-x-4">
         <div className="relative">
           <FaSearch className="absolute left-2 top-2 text-gray-400" />
-          <input onChange={handleSearch} type="text" placeholder="Search" className="pl-8 border rounded-md py-1 px-2 text-sm" />
+          <input onChange={(e) => handleSearch(e.target.value.toLowerCase())} type="text" placeholder="Search" className="pl-8 border rounded-md py-1 px-2 text-sm" />
         </div>
         <div className="flex space-x-3 text-gray-500 *:cursor-pointer">
           <button className="tooltip" data-tip="Edit">
@@ -64,7 +80,14 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
           <button className="tooltip" data-tip={`Delete ${folderData.length} Folders`} disabled={!folderData.length} onClick={onDelete}>
             <FaTrash />
           </button>
-          <button className="tooltip" data-tip="Refresh">
+          <button
+            onClick={() => {
+              setFolderData(allFolderData)
+              replace('/')
+            }}
+            className="tooltip"
+            data-tip="Refresh"
+          >
             <FaSync />
           </button>
           <button className="tooltip tooltip-left" data-tip="Settings">

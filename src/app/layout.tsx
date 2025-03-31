@@ -27,7 +27,7 @@ export default function RootLayout({
         <ModalProvider>
           <FolderProvider>
             <Navbar />
-            <div className="relative">{children}</div>
+            <div className="relative px-4 lg:pl-0">{children}</div>
           </FolderProvider>
         </ModalProvider>
       </body>

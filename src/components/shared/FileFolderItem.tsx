@@ -7,6 +7,7 @@ import { type FileFolderItem, FileFolderItemProps } from '../../types/file-folde
 import { FileItem } from '../../types/file-item'
 import { getAllChildIds } from '../../utils/getAllIds'
 import Dropdown from './Dropdown'
+import FileDetails from './FielDetails'
 
 export const accessTo = ['students', 'teachers', 'moderators']
 export const actions = ['edit', 'delete']
@@ -87,29 +88,3 @@ const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
 
 export default FileFolderItem
 
-const FileDetails = ({ details }: { details: FileItem }) => {
-  const { createdOn, createdBy, lastModifiedOn, lastModifiedBy, kind, size } = details ?? {}
-
-  return (
-    <div className="lg:border-l border-t w-full lg:w-fit lg:border-t-0 p-2 *:text-sm">
-      <p>
-        <strong>Created On:</strong> {createdOn}
-      </p>
-      <p>
-        <strong>Created By:</strong> {createdBy}
-      </p>
-      <p>
-        <strong>Last Modified On:</strong> {lastModifiedOn}
-      </p>
-      <p>
-        <strong>Last Modified By:</strong> {lastModifiedBy}
-      </p>
-      <p>
-        <strong>Kind:</strong> {kind}
-      </p>
-      <p>
-        <strong>Size:</strong> {size}
-      </p>
-    </div>
-  )
-}

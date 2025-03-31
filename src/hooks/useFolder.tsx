@@ -9,6 +9,7 @@ import { getAllIds } from '../utils/getAllIds'
 const useFolder = () => {
   const [checkedItems, setCheckedItems] = useState<string[]>([])
   const [folderData, setFolderData] = useState<FileFolderItemProps['item'][]>(folderDemoData)
+  const [allFolderData] = useState(folderData)
   const { openModal } = useModalContext()
   const [visibility, setVisibility] = useState(visibilityData)
 
@@ -56,6 +57,6 @@ const useFolder = () => {
     })
   }
 
-  return { folderData, setFolderData, setCheckedItems, checkedItems, toggleCheck, showDeleteModal, checkAll, handleDelete, handleVisibility, visibility }
+  return { folderData, setFolderData, setCheckedItems, checkedItems, toggleCheck, showDeleteModal, checkAll, handleDelete, handleVisibility, visibility, allFolderData }
 }
 export default useFolder

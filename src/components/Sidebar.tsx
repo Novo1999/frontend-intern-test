@@ -3,43 +3,14 @@ import Link from 'next/link'
 import { ReactNode, useState } from 'react'
 import { HiArrowLeftCircle, HiBars3BottomLeft } from 'react-icons/hi2'
 import { IoIosArrowUp } from 'react-icons/io'
+import { sidebarData } from '../data/sidebar-data'
 import { type SidebarItem } from '../types/sidebar-item'
-
-const sidebarData = [
-  {
-    header: true,
-    item: 'teach',
-  },
-  {
-    item: 'dashboard',
-  },
-  {
-    item: 'manage Batch',
-    childs: [
-      {
-        item: 'all batches',
-      },
-      {
-        item: 'resources',
-      },
-    ],
-  },
-  {
-    item: 'my earnings',
-  },
-  {
-    item: 'timetable',
-  },
-  {
-    item: 'analytics',
-  },
-]
 
 const Sidebar = ({ children }: { children: ReactNode }) => {
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content bg-gray-100 h-screen pl-4 overflow-scroll">
+      <div className="drawer-content bg-gray-100 h-screen lg:pl-4 overflow-scroll">
         <label htmlFor="my-drawer" className="absolute left-0 p-2 bg-white border cursor-pointer drawer-button lg:hidden">
           <HiBars3BottomLeft />
         </label>
@@ -71,7 +42,7 @@ export default Sidebar
 const SidebarItem = ({ data }: { data: SidebarItem }) => {
   const [isOpen, setIsOpen] = useState(false)
   const hasChild = data.childs?.length
-  const url = '/' + data.item.replace(/ /g, '')
+  const url = '/'
 
   return (
     <>

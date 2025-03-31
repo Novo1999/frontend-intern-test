@@ -4,18 +4,25 @@ import { HiArrowLeftCircle } from 'react-icons/hi2'
 import { IoIosArrowForward } from 'react-icons/io'
 import { folderDemoData } from '../data/folder-demo-data'
 import { FileFolderItemProps } from '../types/file-folder-item-prop'
+import { getAllIds } from '../utils/getAllIds'
 import CourseModuleNavbar from './CourseModuleNavbar'
 import ModuleActions from './ModuleActions'
 import FileFolderItem from './shared/FileFolderItem'
 
 const CourseModuleSection = () => {
   const [checkedItems, setCheckedItems] = useState<string[]>([])
+  const [folderData, setFolderData] = useState(folderDemoData)
 
   const toggleCheck = (id: string, childrenIds: string[] = []) => {
     setCheckedItems((prev) => {
       const isChecked = prev.includes(id)
       return isChecked ? prev.filter((checkedId) => checkedId !== id && !childrenIds.includes(checkedId)) : [...prev, id, ...childrenIds]
     })
+  }
+
+  const checkAll = () => {
+    const allIds = getAllIds(folderDemoData as FileFolderItemProps['item'][])
+    setCheckedItems((prev) => (prev.length > 0 ? [] : allIds))
   }
 
   return (
@@ -35,13 +42,13 @@ const CourseModuleSection = () => {
           <IoIosArrowForward />
         </span>
         <span className="bg-gray-100 px-2 py-1 rounded flex items-center gap-2">
-          <input type="checkbox" className="size-4 cursor-pointer" />
+          <input onChange={checkAll} type="checkbox" className="size-4 cursor-pointer accent-black" />
           Chapter 1
         </span>
       </div>
 
       <section className="overflow-auto h-[50vh] pb-16 border">
-        {folderDemoData.map((item, index, self) => (
+        {folderData.map((item, index, self) => (
           <FileFolderItem key={item.id} item={item as FileFolderItemProps['item']} isLast={self.length - 1 === index} checkedItems={checkedItems} onCheck={toggleCheck} />
         ))}
         <ModuleActions />

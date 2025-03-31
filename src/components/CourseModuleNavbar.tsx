@@ -1,12 +1,14 @@
 'use client'
 import { useState } from 'react'
 import { FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTrash } from 'react-icons/fa'
+import { useFolderContext } from '../context/FolderContext'
 import { CourseModuleNavbarProp } from '../types/course-module-nav-prop'
 
 const tabs = ['content', 'course details', 'revision']
 
-const CourseModuleNavbar = ({ onDelete, folderData }: CourseModuleNavbarProp) => {
+const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
   const [selectedTab, setSelectedTab] = useState('content')
+  const { folderData } = useFolderContext()
 
   const handleSelectTab = (tab: string) => {
     setSelectedTab(tab)

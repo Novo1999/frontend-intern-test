@@ -10,8 +10,10 @@ import Dropdown from './Dropdown'
 export const accessTo = ['students', 'teachers', 'moderators']
 export const actions = ['edit', 'delete']
 
-const FileFolderItem = ({ item, isLast, onCheck, checkedItems, setFolderData }: FileFolderItemProps) => {
+const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { setFolderData, checkedItems } = useFolderContext()
+
   const { id, name, type, children } = item
 
   const toggleOpen = () => setIsOpen(!isOpen)

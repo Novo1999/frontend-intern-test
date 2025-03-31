@@ -40,7 +40,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
     <div className="drawer lg:drawer-open">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content bg-gray-100 h-screen pl-4 overflow-scroll">
-        <label htmlFor="my-drawer" className="absolute left-0 p-2 border cursor-pointer drawer-button lg:hidden">
+        <label htmlFor="my-drawer" className="absolute left-0 p-2 bg-white border cursor-pointer drawer-button lg:hidden">
           <HiBars3BottomLeft />
         </label>
         {children}

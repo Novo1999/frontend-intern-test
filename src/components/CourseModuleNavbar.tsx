@@ -69,7 +69,7 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
               replace('/')
             }}
             className="tooltip"
-            data-tip="Refresh"
+            data-tip="Reset"
           >
             <FaSync />
           </button>

@@ -12,8 +12,10 @@ const useFolder = () => {
   const [allFolderData] = useState(folderData)
   const { openModal } = useModalContext()
   const [visibility, setVisibility] = useState(visibilityData)
+  const [editing, setEditing] = useState('')
 
   const toggleCheck = (id: string, childrenIds: string[] = []) => {
+    if (editing) setEditing('')
     setCheckedItems((prev) => {
       const isChecked = prev.includes(id)
       return isChecked ? prev.filter((checkedId) => checkedId !== id && !childrenIds.includes(checkedId)) : [...prev, id, ...childrenIds]
@@ -21,12 +23,17 @@ const useFolder = () => {
   }
 
   const checkAll = () => {
+    if (editing) setEditing('')
+
     const allIds = getAllIds(folderDemoData as FileFolderItemProps['item'][])
     setCheckedItems((prev) => (prev.length > 0 ? [] : allIds))
   }
 
-  const showDeleteModal = () =>
+  const showDeleteModal = () => {
+    if (editing) setEditing('')
+
     openModal('Are you sure you want to delete everything?', { confirmBtnClass: 'bg-red-500', confirmBtnText: 'Delete', headerIcon: <IoMdWarning />, confirmHandler: () => setFolderData([]) })
+  }
 
   const handleDelete = (itemId: string) => {
     const removeItem = (items: FileFolderItem[]): FileFolderItem[] => {
@@ -41,7 +48,26 @@ const useFolder = () => {
     setFolderData?.((prev) => removeItem(prev))
   }
 
+  const handleEdit = (itemId: string, value: string) => {
+    const editItem = (items: FileFolderItem[]): FileFolderItem[] => {
+      return items
+        .map((el) => {
+          if (el.id === itemId) {
+            el.name = value
+          }
+          return el
+        })
+        .map((el) => ({
+          ...el,
+          children: el.children ? editItem(el.children) : el.children,
+        }))
+    }
+    setFolderData?.((prev) => editItem(prev))
+  }
+
   const handleVisibility = (id: string, item: string) => {
+    if (editing) setEditing('')
+
     setVisibility((prev) => {
       return prev.map((prevItem) => {
         if (prevItem.id === id) {
@@ -57,6 +83,21 @@ const useFolder = () => {
     })
   }
 
-  return { folderData, setFolderData, setCheckedItems, checkedItems, toggleCheck, showDeleteModal, checkAll, handleDelete, handleVisibility, visibility, allFolderData }
+  return {
+    folderData,
+    setFolderData,
+    setCheckedItems,
+    checkedItems,
+    toggleCheck,
+    showDeleteModal,
+    checkAll,
+    handleDelete,
+    handleVisibility,
+    visibility,
+    allFolderData,
+    handleEdit,
+    editing,
+    setEditing,
+  }
 }
 export default useFolder

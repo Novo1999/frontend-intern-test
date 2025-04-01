@@ -7,15 +7,17 @@ import { type FileFolderItem, FileFolderItemProps } from '../../types/file-folde
 import { FileItem } from '../../types/file-item'
 import { getAllChildIds } from '../../utils/getAllIds'
 import Dropdown from './Dropdown'
-import FileDetails from './FielDetails'
+import FileDetails from './FileDetails'
+import FileFolderEdit from './FileFolderEdit'
 
 export const accessTo = ['students', 'teachers', 'moderators']
 export const actions = ['edit', 'delete']
 
 const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { checkedItems } = useFolderContext()
+  const { checkedItems, editing, setEditing } = useFolderContext()
   const { openModal } = useModalContext()
+  const [editValue, setEditValue] = useState('')
 
   const { id, name, type, children } = item
 
@@ -34,21 +36,31 @@ const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
 
   const visibilities = visibility.find((vD) => vD.id === id)?.visibleTo
 
+  const handleAction = (actionType: string) => {
+    if (actionType == 'delete') {
+      openModal(`Are you sure you want to delete ${name}?`, { confirmHandler: () => handleDelete(id), confirmBtnClass: 'bg-red-500' })
+    } else {
+      setEditing(id)
+      setEditValue(name)
+    }
+  }
+
   return (
     <div className={`${!isLast && typeIsFolder ? 'border-b' : ''}`}>
       <div className={`flex justify-between flex-wrap lg:flex-nowrap items-start ${typeIsFile ? 'border-t' : ''}`}>
         <div className={`flex items-center space-x-2 p-4 ${typeIsFile ? 'pl-12' : ''}`}>
           <input type="checkbox" checked={isChecked} onChange={handleCheck} className="size-4 cursor-pointer accent-black" />
           {typeIsFolder ? (
-            <button onClick={toggleOpen} className="flex items-center gap-2 cursor-pointer">
+            <div onClick={() => !editing && toggleOpen()} className="flex items-center gap-2 cursor-pointer">
               <FaFolder className="text-gray-600 text-2xl" />
-              <span>{name}</span>
+              {editing === id ? <FileFolderEdit editValue={editValue} id={id} setEditValue={setEditValue} /> : <span>{name}</span>}
+
               <IoIosArrowDown className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition duration-200`} />
-            </button>
+            </div>
           ) : (
             <div className="flex items-center gap-2">
               <FaFileAlt className="text-gray-600 text-2xl" />
-              <span>{name}</span>
+              {editing === id ? <FileFolderEdit editValue={editValue} id={id} setEditValue={setEditValue} /> : <span>{name}</span>}
             </div>
           )}
         </div>
@@ -65,11 +77,7 @@ const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
               >
                 <FaEye /> <span>Access to</span> <IoIosArrowDown />
               </Dropdown>
-              <Dropdown
-                onClick={(action) => (action === 'delete' ? openModal(`Are you sure you want to delete ${name}?`, { confirmHandler: () => handleDelete(id), confirmBtnClass: 'bg-red-500' }) : null)}
-                triggerClassName="min-h-10"
-                items={actions}
-              >
+              <Dropdown onClick={handleAction} triggerClassName="min-h-10" items={actions}>
                 <p>Actions</p> <IoIosArrowDown />
               </Dropdown>
             </div>
@@ -87,4 +95,3 @@ const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
 }
 
 export default FileFolderItem
-

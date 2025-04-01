@@ -27,16 +27,17 @@ export default function RootLayout({
   return (
     <html data-theme="light" lang="en">
       <body className={`${kanit.className} antialiased overflow-hidden bg-gray-100`}>
-        <ModalProvider>
-          <FolderProvider>
-            <FilterProvider>
-              <Navbar />
-              <div className="relative px-4 lg:pl-0">
-                <Suspense fallback={<LuLoaderCircle className="animate-spin" />}>{children}</Suspense>
-              </div>
-            </FilterProvider>
-          </FolderProvider>
-        </ModalProvider>
+        {/* suspense used to prevent build error from useSearchParams */}
+        <Suspense fallback={<LuLoaderCircle className="animate-spin" />}> 
+          <ModalProvider>
+            <FolderProvider>
+              <FilterProvider>
+                <Navbar />
+                <div className="relative px-4 lg:pl-0">{children}</div>
+              </FilterProvider>
+            </FolderProvider>
+          </ModalProvider>
+        </Suspense>
       </body>
     </html>
   )

@@ -1,20 +1,22 @@
 'use client'
 
+import { useState } from 'react'
 import useFileFolderAdd from '../hooks/use-add-file-folder'
 
-const FolderAddForm = () => {
-  const { parentId, setParentId, name, setName, selectedSubject, setSelectedSubject, selectedBatch, setSelectedBatch, flattenedFolders, subjects, batches, handleSubmit } = useFileFolderAdd()
+const FileAddForm = () => {
+  const { parentId, setParentId, selectedSubject, setSelectedSubject, selectedBatch, setSelectedBatch, flattenedFolders, subjects, batches, handleSubmit } = useFileFolderAdd()
+  const [file, setFile] = useState<File | null>(null)
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    handleSubmit('folder')
-    const modalElement = document.getElementById('folder') as HTMLFormElement | null
+    if (file) handleSubmit('file', file)
+    const modalElement = document.getElementById('file') as HTMLFormElement | null
     modalElement?.close()
   }
 
   return (
     <form onSubmit={handleFormSubmit} className="p-4 rounded-lg w-full max-w-md bg-white">
-      <h2 className="text-lg font-semibold mb-4">Add New Folder</h2>
+      <h2 className="text-lg font-semibold mb-4">Add New File</h2>
 
       <div className="form-control">
         <label className="label">
@@ -32,9 +34,15 @@ const FolderAddForm = () => {
 
       <div className="form-control mt-4">
         <label className="label">
-          <span className="label-text">Folder Name</span>
+          <span className="label-text">File</span>
         </label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter folder name" className="input input-bordered w-full" />
+        <input
+          type="file"
+          className="file-input file-input-bordered w-full"
+          onChange={(e) => {
+            setFile(e.target.files?.[0] || null)
+          }}
+        />
       </div>
 
       <div className="form-control mt-4">
@@ -66,10 +74,10 @@ const FolderAddForm = () => {
       </div>
 
       <button type="submit" className="btn bg-black text-white mt-4 w-full">
-        Add Folder
+        Add File
       </button>
     </form>
   )
 }
 
-export default FolderAddForm
+export default FileAddForm

@@ -5,6 +5,7 @@ import { FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTrash, FaTrashRest
 import { RiListSettingsLine } from 'react-icons/ri'
 import { useFilterContext } from '../context/FilterContext'
 import { useFolderContext } from '../context/FolderContext'
+import useFileFolderAdd from '../hooks/use-add-file-folder'
 import { CourseModuleNavbarProp } from '../types/course-module-nav-prop'
 
 const tabs = ['content', 'course details', 'revision']
@@ -15,6 +16,7 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
   const { replace } = useRouter()
   const { handleFilter } = useFilterContext()
   const searchParams = useSearchParams()
+  const { handleAddMainFolder } = useFileFolderAdd()
   const [search, setSearch] = useState('')
 
   useEffect(() => {
@@ -39,9 +41,9 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
             {tab}
           </button>
         ))}
-        <div className="flex items-center gap-2">
-          <FaPlusCircle className="text-black" /> <span className="text-gray-400 italic font-thin">Add main Folder</span>
-        </div>
+        <button onClick={handleAddMainFolder} className="cursor-pointer flex items-center gap-2">
+          <FaPlusCircle className="text-black" /> <span className="text-black hover:underline italic font-thin">Add main Folder</span>
+        </button>
       </div>
       <div className="flex flex-wrap gap-2 items-center space-x-4">
         <div className="relative">

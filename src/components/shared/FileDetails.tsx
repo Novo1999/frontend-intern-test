@@ -18,7 +18,7 @@ const FileDetails = ({ details }: { details: FileItem }) => {
         <strong>Last Modified By:</strong> {lastModifiedBy}
       </p>
       <p>
-        <strong>Kind:</strong> {kind}
+        <strong>Kind:</strong> <span className='max-w-36 line-clamp-1'>{kind}</span>
       </p>
       <p>
         <strong>Size:</strong> {size}

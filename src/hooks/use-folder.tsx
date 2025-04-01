@@ -10,7 +10,7 @@ import { getAllIds } from '../utils/getAllIds'
 const useFolder = () => {
   const [checkedItems, setCheckedItems] = useState<string[]>([])
   const [folderData, setFolderData] = useState<FileFolderItemProps['item'][]>(folderDemoData)
-  const [allFolderData] = useState(folderData)
+  const [allFolderData, setAllFolderData] = useState(folderData)
   const { openModal } = useModalContext()
   const [visibility, setVisibility] = useState(visibilityData)
   const [editing, setEditing] = useState('')
@@ -40,6 +40,7 @@ const useFolder = () => {
       headerIcon: <IoMdWarning />,
       confirmHandler: () => {
         setFolderData([])
+        setAllFolderData([])
         addToast('All Files and Folder Deleted', 'success')
       },
     })
@@ -56,6 +57,7 @@ const useFolder = () => {
     }
 
     setFolderData?.((prev) => removeItem(prev))
+    setAllFolderData((prev) => removeItem(prev))
     addToast('Item has been Deleted', 'success')
   }
 
@@ -74,23 +76,25 @@ const useFolder = () => {
         }))
     }
     setFolderData?.((prev) => editItem(prev))
+    setAllFolderData((prev) => editItem(prev))
   }
 
   const handleVisibility = (id: string, item: string) => {
     if (editing) setEditing('')
 
     setVisibility((prev) => {
-      return prev.map((prevItem) => {
-        if (prevItem.id === id) {
-          if (prevItem.visibleTo.includes(item)) {
-            return { ...prevItem, visibleTo: prevItem.visibleTo.filter((vT) => vT !== item) }
-          } else {
-            return { ...prevItem, visibleTo: [...prevItem.visibleTo, item] }
+      const exists = prev.some((prevItem) => prevItem.id === id)
+
+      if (exists) {
+        return prev.map((prevItem) => {
+          if (prevItem.id === id) {
+            return prevItem.visibleTo.includes(item) ? { ...prevItem, visibleTo: prevItem.visibleTo.filter((vT) => vT !== item) } : { ...prevItem, visibleTo: [...prevItem.visibleTo, item] }
           }
-        } else {
           return prevItem
-        }
-      })
+        })
+      }
+
+      return [...prev, { id, visibleTo: [item] }]
     })
   }
 
@@ -109,7 +113,8 @@ const useFolder = () => {
     handleEdit,
     editing,
     setEditing,
-    setVisibility
+    setVisibility,
+    setAllFolderData,
   }
 }
 export default useFolder

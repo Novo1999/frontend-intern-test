@@ -1,7 +1,8 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTrash } from 'react-icons/fa'
+import { FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTrash, FaTrashRestore } from 'react-icons/fa'
+import { RiListSettingsLine } from 'react-icons/ri'
 import { useFilterContext } from '../context/FilterContext'
 import { useFolderContext } from '../context/FolderContext'
 import { CourseModuleNavbarProp } from '../types/course-module-nav-prop'
@@ -57,24 +58,26 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
           />
         </div>
         <div className="flex space-x-3 text-gray-500 *:cursor-pointer">
-          <button className="tooltip" data-tip="Edit">
-            <FaPen />
+          <button className="tooltip group" data-tip="Edit">
+            <FaPen className="group-hover:-rotate-90 transition duration-300" />
           </button>
-          <button className="tooltip" data-tip={`Delete ${folderData.length} Folders`} disabled={!folderData.length} onClick={onDelete}>
-            <FaTrash />
+          <button className="tooltip group" data-tip={`Delete ${folderData.length} Folders`} disabled={!folderData.length} onClick={onDelete}>
+            <FaTrash className="group-hover:hidden block" />
+            <FaTrashRestore className="group-hover:block hidden" />
           </button>
           <button
             onClick={() => {
               setFolderData(allFolderData)
               replace('/')
             }}
-            className="tooltip"
+            className="tooltip group"
             data-tip="Reset"
           >
-            <FaSync />
+            <FaSync className="group-hover:rotate-180 transition duration-300" />
           </button>
-          <button className="tooltip tooltip-left" data-tip="Settings">
-            <FaSlidersH />
+          <button className="tooltip tooltip-left group" data-tip="Settings">
+            <FaSlidersH className="group-hover:hidden block" />
+            <RiListSettingsLine className="group-hover:block hidden" />
           </button>
         </div>
       </div>

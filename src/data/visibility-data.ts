@@ -13,4 +13,6 @@ export const visibilityData = [
   { id: '3-1-2', visibleTo: ['moderators'] },
   { id: '4', visibleTo: ['students', 'teachers', 'moderators'] },
   { id: '4-1', visibleTo: ['teachers', 'moderators'] },
+  { id: '1-2-2', visibleTo: ['teachers', 'moderators'] },
+  { id: '1-2-2-1', visibleTo: ['teachers', 'moderators', 'students'] },
 ]

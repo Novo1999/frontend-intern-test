@@ -109,6 +109,7 @@ const useFolder = () => {
     handleEdit,
     editing,
     setEditing,
+    setVisibility
   }
 }
 export default useFolder

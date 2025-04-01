@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { IoMdWarning } from 'react-icons/io'
 import { useModalContext } from '../context/ModalContext'
+import { useToast } from '../context/ToastContext'
 import { folderDemoData } from '../data/folder-demo-data'
 import { visibilityData } from '../data/visibility-data'
 import { FileFolderItem, FileFolderItemProps } from '../types/file-folder-item-prop'
@@ -13,6 +14,7 @@ const useFolder = () => {
   const { openModal } = useModalContext()
   const [visibility, setVisibility] = useState(visibilityData)
   const [editing, setEditing] = useState('')
+  const { addToast } = useToast()
 
   const toggleCheck = (id: string, childrenIds: string[] = []) => {
     if (editing) setEditing('')
@@ -32,7 +34,15 @@ const useFolder = () => {
   const showDeleteModal = () => {
     if (editing) setEditing('')
 
-    openModal('Are you sure you want to delete everything?', { confirmBtnClass: 'bg-red-500', confirmBtnText: 'Delete', headerIcon: <IoMdWarning />, confirmHandler: () => setFolderData([]) })
+    openModal('Are you sure you want to delete everything?', {
+      confirmBtnClass: 'bg-red-500',
+      confirmBtnText: 'Delete',
+      headerIcon: <IoMdWarning />,
+      confirmHandler: () => {
+        setFolderData([])
+        addToast('All Files and Folder Deleted', 'success')
+      },
+    })
   }
 
   const handleDelete = (itemId: string) => {
@@ -46,6 +56,7 @@ const useFolder = () => {
     }
 
     setFolderData?.((prev) => removeItem(prev))
+    addToast('Item has been Deleted', 'success')
   }
 
   const handleEdit = (itemId: string, value: string) => {

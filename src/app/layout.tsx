@@ -3,9 +3,11 @@ import { Kanit } from 'next/font/google'
 import { Suspense } from 'react'
 import { LuLoaderCircle } from 'react-icons/lu'
 import Navbar from '../components/Navbar'
+import ToastContainer from '../components/shared/ToastContainer'
 import { FilterProvider } from '../context/FilterContext'
 import { FolderProvider } from '../context/FolderContext'
 import ModalProvider from '../context/ModalContext'
+import { ToastProvider } from '../context/ToastContext'
 import './globals.css'
 
 const kanit = Kanit({
@@ -28,15 +30,24 @@ export default function RootLayout({
     <html data-theme="light" lang="en">
       <body className={`${kanit.className} antialiased overflow-hidden bg-gray-100`}>
         {/* suspense used to prevent build error from useSearchParams */}
-        <Suspense fallback={<LuLoaderCircle className="animate-spin" />}> 
-          <ModalProvider>
-            <FolderProvider>
-              <FilterProvider>
-                <Navbar />
-                <div className="relative px-4 lg:pl-0">{children}</div>
-              </FilterProvider>
-            </FolderProvider>
-          </ModalProvider>
+        <Suspense
+          fallback={
+            <div className="min-h-[90vh] flex justify-center items-center">
+              <LuLoaderCircle className="animate-spin" />
+            </div>
+          }
+        >
+          <ToastProvider>
+            <ModalProvider>
+              <FolderProvider>
+                <FilterProvider>
+                  <Navbar />
+                  <div className="relative px-4 lg:pl-0">{children}</div>
+                </FilterProvider>
+              </FolderProvider>
+            </ModalProvider>
+            <ToastContainer />
+          </ToastProvider>
         </Suspense>
       </body>
     </html>

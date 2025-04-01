@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { Kanit } from 'next/font/google'
+import { Suspense } from 'react'
+import { LuLoaderCircle } from 'react-icons/lu'
 import Navbar from '../components/Navbar'
 import { FilterProvider } from '../context/FilterContext'
 import { FolderProvider } from '../context/FolderContext'
@@ -29,7 +31,9 @@ export default function RootLayout({
           <FolderProvider>
             <FilterProvider>
               <Navbar />
-              <div className="relative px-4 lg:pl-0">{children}</div>
+              <div className="relative px-4 lg:pl-0">
+                <Suspense fallback={<LuLoaderCircle className="animate-spin" />}>{children}</Suspense>
+              </div>
             </FilterProvider>
           </FolderProvider>
         </ModalProvider>

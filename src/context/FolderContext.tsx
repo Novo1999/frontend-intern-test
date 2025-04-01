@@ -1,6 +1,6 @@
 'use client'
 import { createContext, ReactNode, useContext } from 'react'
-import useFolder from '../hooks/useFolder'
+import useFolder from '../hooks/use-folder'
 
 const FolderContext = createContext<ReturnType<typeof useFolder> | null>(null)
 

@@ -2,66 +2,37 @@
 import av1 from '@/assets/avatar/av1.jpg'
 import av2 from '@/assets/avatar/av2.jpg'
 import Image from 'next/image'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { GiClassicalKnowledge } from 'react-icons/gi'
 import { IoIosArrowDown } from 'react-icons/io'
-import { useFolderContext } from '../context/FolderContext'
+import { useFilterContext } from '../context/FilterContext'
 import { batches, subjects } from '../data/subject-batch-data'
-import { FileFolderItem } from '../types/file-folder-item-prop'
 import Dropdown from './shared/Dropdown'
 
 const TopActions = () => {
-  const { setFolderData, allFolderData } = useFolderContext()
   const searchParams = useSearchParams()
-  const { replace } = useRouter()
-  const pathname = usePathname()
-
-  const handleSubjectSelect = useCallback(
-    (itemId: number, type: 'batch' | 'sub') => {
-      const typeIsBatch = type === 'batch'
-
-      const params = new URLSearchParams(searchParams)
-      if (itemId) {
-        params.set(typeIsBatch ? 'batch' : 'sub_id', itemId.toString())
-      } else {
-        params.delete(typeIsBatch ? 'batch' : 'sub_id')
-      }
-      replace(`${pathname}?${params.toString()}`)
-
-      const filterUsingCourse = (items: FileFolderItem[]): FileFolderItem[] => {
-        return items
-          .map((el) => {
-            const filteredChildren = el.children ? filterUsingCourse(el.children) : []
-
-            if (el[typeIsBatch ? 'batchId' : 'subjectId'] === itemId || filteredChildren.length > 0) {
-              return { ...el, children: filteredChildren }
-            }
-            return null
-          })
-          .filter(Boolean) as FileFolderItem[]
-      }
-
-      setFolderData(() => filterUsingCourse(allFolderData))
-    },
-    [allFolderData, pathname, searchParams, replace, setFolderData]
-  )
-
-  const filterType = searchParams.has('sub_id') ? 'sub' : 'batch'
-  useEffect(() => {
-    if (!searchParams.has('sub_id') || !searchParams.has('batch')) return
-    handleSubjectSelect(Number(searchParams.get('sub_id')), filterType)
-  }, [searchParams, filterType, handleSubjectSelect])
+  const { handleFilter } = useFilterContext()
 
   return (
     <div className="flex justify-between font-thin mt-10 gap-4 flex-wrap items-center">
       <div className="flex gap-2 flex-wrap">
-        <Dropdown isArrayOfRecords onClick={(item) => handleSubjectSelect(Number(item), 'sub')} triggerClassName="min-h-10" wrapperClassName="border-r max-h-10 pr-2" items={subjects}>
-          <p>{subjects.find((sub) => sub.id === Number(searchParams.get('sub_id')) || 0)?.name || 'Course For Chemistry'}</p>
+        <Dropdown
+          isArrayOfRecords
+          onClick={(item) => handleFilter({ search: searchParams.get('search') || '', subId: item || '', batchId: searchParams.get('batch') || '' })}
+          triggerClassName="min-h-10"
+          wrapperClassName="border-r max-h-10 pr-2"
+          items={subjects}
+        >
+          <p>{subjects.find((sub) => sub.id === Number(searchParams.get('sub')) || 0)?.name || 'Course For Chemistry'}</p>
           <IoIosArrowDown />
         </Dropdown>
-        <Dropdown onClick={(item) => handleSubjectSelect(Number(item), 'batch')} isArrayOfRecords triggerClassName="min-h-10" items={batches}>
-          <p>{batches.find((batch) => batch.id === Number(searchParams.get('batch')) || 0)?.name || 'Batch'}</p>
+        <Dropdown
+          onClick={(item) => handleFilter({ search: searchParams.get('search') || '', subId: searchParams.get('subId') || '', batchId: item || '' })}
+          isArrayOfRecords
+          triggerClassName="min-h-10"
+          items={batches}
+        >
+          <p>{batches.find((batch) => batch.id === Number(searchParams.get('batchId')) || 0)?.name || 'Batch'}</p>
           <IoIosArrowDown />
         </Dropdown>
       </div>

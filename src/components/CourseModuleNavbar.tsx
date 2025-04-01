@@ -1,10 +1,10 @@
 'use client'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTrash } from 'react-icons/fa'
+import { useFilterContext } from '../context/FilterContext'
 import { useFolderContext } from '../context/FolderContext'
 import { CourseModuleNavbarProp } from '../types/course-module-nav-prop'
-import { FileFolderItem } from '../types/file-folder-item-prop'
 
 const tabs = ['content', 'course details', 'revision']
 
@@ -12,45 +12,19 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
   const [selectedTab, setSelectedTab] = useState('content')
   const { folderData, setFolderData, allFolderData } = useFolderContext()
   const { replace } = useRouter()
+  const { handleFilter } = useFilterContext()
   const searchParams = useSearchParams()
-  const pathname = usePathname()
+  const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    if (!searchParams.toString) return
+    if (!searchParams.has('search')) return
+    setSearch(searchParams.get('search') || '')
+  }, [searchParams.toString()])
 
   const handleSelectTab = (tab: string) => {
     setSelectedTab(tab)
   }
-
-  const handleSearch = useCallback(
-    (value: string) => {
-      const params = new URLSearchParams(searchParams)
-      if (value) {
-        params.set('search', value.toString())
-      } else {
-        params.delete('search')
-      }
-      replace(`${pathname}?${params.toString()}`)
-      const searchData = (items: FileFolderItem[]): FileFolderItem[] => {
-        return items
-          .map((el) => {
-            const filteredChildren = el.children ? searchData(el.children) : []
-
-            if (el.name.toLowerCase().includes(value) || filteredChildren.length > 0) {
-              return { ...el, children: filteredChildren }
-            }
-
-            return null
-          })
-          .filter(Boolean) as FileFolderItem[]
-      }
-
-      setFolderData(() => searchData(allFolderData))
-    },
-    [allFolderData, replace, searchParams, pathname, setFolderData]
-  )
-
-  useEffect(() => {
-    if (!searchParams.has('search')) return
-    handleSearch(searchParams.get('search') || '')
-  }, [searchParams, handleSearch])
 
   return (
     <div className="flex justify-between flex-wrap gap-2 items-center border-b">
@@ -71,7 +45,16 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
       <div className="flex flex-wrap gap-2 items-center space-x-4">
         <div className="relative">
           <FaSearch className="absolute left-2 top-2 text-gray-400" />
-          <input onChange={(e) => handleSearch(e.target.value.toLowerCase())} type="text" placeholder="Search" className="pl-8 border rounded-md py-1 px-2 text-sm" />
+          <input
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value)
+              handleFilter({ search: e.target.value.toLowerCase(), subId: searchParams.get('subId') || '', batchId: searchParams.get('batchId') || '' })
+            }}
+            type="text"
+            placeholder="Search"
+            className="pl-8 border rounded-md py-1 px-2 text-sm"
+          />
         </div>
         <div className="flex space-x-3 text-gray-500 *:cursor-pointer">
           <button className="tooltip" data-tip="Edit">

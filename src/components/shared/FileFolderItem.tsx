@@ -55,7 +55,7 @@ const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
               <FaFolder className="text-gray-600 text-2xl" />
               {editing === id ? <FileFolderEdit editValue={editValue} id={id} setEditValue={setEditValue} /> : <span>{name}</span>}
 
-              <IoIosArrowDown className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition duration-200`} />
+              {(children?.length || 0) > 0 && <IoIosArrowDown className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition duration-200`} />}
             </div>
           ) : (
             <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ const FileFolderItem = ({ item, isLast, onCheck }: FileFolderItemProps) => {
                 <p>Actions</p> <IoIosArrowDown />
               </Dropdown>
             </div>
-            <p className="italic capitalize">
+            <p className="italic capitalize max-w-60 text-wrap">
               <strong>Visible to: </strong>
               {visibilities?.join(', ') || 'Nobody'}
             </p>

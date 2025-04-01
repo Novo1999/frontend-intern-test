@@ -61,7 +61,7 @@ const useFileFolderAdd = () => {
               createdOn: new Date().toISOString().split('T')[0],
               createdBy: 'Sir 1',
               lastModifiedOn: '',
-              size: bytesToMb(file?.size || 0).toString() || '0',
+              size: bytesToMb(file?.size || 0).toString() + "MB" || '0',
               lastModifiedBy: '',
             }),
           }
@@ -81,9 +81,10 @@ const useFileFolderAdd = () => {
     addToast(`Added new ${type}`, 'success')
   }
 
-  const handleAddMainFolder = () => {
-    setFolderData((prev) => [...prev, { batchId: 1, id: (Number(prev[prev.length - 1].id) + 1).toString(), children: [], name: 'test', subjectId: 1, type: 'folder' }])
-    setAllFolderData((prev) => [...prev, { batchId: 1, id: (Number(prev[prev.length - 1].id) + 1).toString(), children: [], name: 'test', subjectId: 1, type: 'folder' }])
+  const handleAddMainFolder = (name: string) => {
+    setFolderData((prev) => [...prev, { batchId: 1, id: (Number(prev[prev.length - 1].id) + 1).toString(), children: [], name, subjectId: 1, type: 'folder' }])
+    setAllFolderData((prev) => [...prev, { batchId: 1, id: (Number(prev[prev.length - 1].id) + 1).toString(), children: [], name, subjectId: 1, type: 'folder' }])
+    setVisibility((prev) => [...prev, { id: (Number(folderData[folderData.length - 1].id) + 1).toString(), visibleTo: [] }])
   }
 
   return {

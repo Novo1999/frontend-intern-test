@@ -27,7 +27,7 @@ const useFolder = () => {
   const checkAll = () => {
     if (editing) setEditing('')
 
-    const allIds = getAllIds(folderDemoData as FileFolderItemProps['item'][])
+    const allIds = getAllIds(folderData as FileFolderItemProps['item'][])
     setCheckedItems((prev) => (prev.length > 0 ? [] : allIds))
   }
 

@@ -12,6 +12,10 @@ const FileAddForm = () => {
     if (file) handleSubmit('file', file)
     const modalElement = document.getElementById('file') as HTMLFormElement | null
     modalElement?.close()
+    setParentId('')
+    setFile(null)
+    setSelectedBatch('')
+    setSelectedSubject('')
   }
 
   return (

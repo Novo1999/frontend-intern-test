@@ -10,6 +10,10 @@ const FolderAddForm = () => {
     handleSubmit('folder')
     const modalElement = document.getElementById('folder') as HTMLFormElement | null
     modalElement?.close()
+    setParentId('')
+    setName('')
+    setSelectedBatch('')
+    setSelectedSubject('')
   }
 
   return (

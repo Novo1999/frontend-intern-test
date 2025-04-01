@@ -23,7 +23,7 @@ const TopActions = () => {
           wrapperClassName="border-r max-h-10 pr-2"
           items={subjects}
         >
-          <p>{subjects.find((sub) => sub.id === Number(searchParams.get('sub')) || 0)?.name || 'Course For Chemistry'}</p>
+          <p>{subjects.find((sub) => sub.id === Number(searchParams.get('subId')) || 0)?.name || 'Course For Chemistry'}</p>
           <IoIosArrowDown />
         </Dropdown>
         <Dropdown

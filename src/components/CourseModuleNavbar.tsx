@@ -1,7 +1,7 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTrash, FaTrashRestore } from 'react-icons/fa'
+import { FaCheck, FaPen, FaPlusCircle, FaSearch, FaSlidersH, FaSync, FaTimes, FaTrash, FaTrashRestore } from 'react-icons/fa'
 import { RiListSettingsLine } from 'react-icons/ri'
 import { useFilterContext } from '../context/FilterContext'
 import { useFolderContext } from '../context/FolderContext'
@@ -18,6 +18,8 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
   const searchParams = useSearchParams()
   const { handleAddMainFolder } = useFileFolderAdd()
   const [search, setSearch] = useState('')
+  const [addingMain, setAddingMain] = useState(false)
+  const [mainFolderName, setMainFolderName] = useState('')
 
   useEffect(() => {
     if (!searchParams.toString) return
@@ -25,13 +27,19 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
     setSearch(searchParams.get('search') || '')
   }, [searchParams.toString()])
 
-  const handleSelectTab = (tab: string) => {
-    setSelectedTab(tab)
+  const handleSelectTab = (tab: string) => setSelectedTab(tab)
+
+  const handleConfirmAddMain = () => {
+    if (mainFolderName.trim()) {
+      handleAddMainFolder(mainFolderName)
+      setMainFolderName('')
+      setAddingMain(false)
+    }
   }
 
   return (
-    <div className="flex justify-between flex-wrap gap-2 items-center border-b">
-      <div className="flex gap-8 items-center *:pb-4">
+    <div className="flex justify-between flex-wrap gap-2 items-center border-b pb-4 lg:pb-0">
+      <div className="flex gap-8 items-center *:pb-4 flex-wrap">
         {tabs.map((tab) => (
           <button
             onClick={() => handleSelectTab(tab)}
@@ -41,9 +49,21 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
             {tab}
           </button>
         ))}
-        <button onClick={handleAddMainFolder} className="cursor-pointer flex items-center gap-2">
-          <FaPlusCircle className="text-black" /> <span className="text-black hover:underline italic font-thin">Add main Folder</span>
-        </button>
+        {addingMain ? (
+          <div className="flex items-center gap-2 border !pb-0 mb-3 border-black rounded-lg">
+            <input value={mainFolderName} onChange={(e) => setMainFolderName(e.target.value)} placeholder="Add Main Folder" autoFocus type="text" className="outline-none placeholder:text-sm pl-2" />
+            <button onClick={handleConfirmAddMain} className="text-green-600 cursor-pointer">
+              <FaCheck />
+            </button>
+            <button onClick={() => setAddingMain(false)} className="text-red-600 cursor-pointer">
+              <FaTimes />
+            </button>
+          </div>
+        ) : (
+          <button onClick={() => setAddingMain(true)} className="cursor-pointer flex items-center gap-2 italic hover:underline">
+            <FaPlusCircle className="text-black" /> Add Main Folder
+          </button>
+        )}
       </div>
       <div className="flex flex-wrap gap-2 items-center space-x-4">
         <div className="relative">

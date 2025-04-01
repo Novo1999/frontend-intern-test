@@ -90,6 +90,7 @@ const CourseModuleNavbar = ({ onDelete }: CourseModuleNavbarProp) => {
           <button
             onClick={() => {
               setFolderData(allFolderData)
+              setSearch('')
               replace('/')
             }}
             className="tooltip group"
